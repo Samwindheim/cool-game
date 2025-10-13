@@ -101,3 +101,18 @@ Assets/_Recovery*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Cursor
+.cursor/
+
+# implementation plan and meta
+/Assets/Scripts/implementation_plan.txt
+/Assets/Scripts/implementation_plan.txt.meta
+
+# cursor rules
+.cursor/rules/unity.mdc
+.cursor/rules/unity.mdc.meta
+
+# cursor settings
+.cursor/settings.json
+.cursor/settings.json.meta
