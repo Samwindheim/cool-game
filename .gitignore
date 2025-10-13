@@ -116,3 +116,9 @@ Assets/_Recovery*
 # cursor settings
 .cursor/settings.json
 .cursor/settings.json.meta
+
+Assets/Samples/
+Assets/Samples.meta
+Assets/Samples.meta.meta
+
+

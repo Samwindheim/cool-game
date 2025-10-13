@@ -8,12 +8,17 @@ public class PlayerController : MonoBehaviour
     private bool canDash = true;
     private Rigidbody rb;
     private Vector3 inputDir;
+    private Vector3 startPosition;
 
     [SerializeField] private string horizontalAxis = "Horizontal";
     [SerializeField] private string verticalAxis = "Vertical";
     [SerializeField] private KeyCode dashKey = KeyCode.Space;
 
-    void Start() => rb = GetComponent<Rigidbody>();
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        startPosition = transform.position;
+    }
 
     void Update()
     {
@@ -35,5 +40,12 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(inputDir.normalized * dashForce, ForceMode.Impulse);
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    public void ResetPosition()
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = startPosition;
     }
 }

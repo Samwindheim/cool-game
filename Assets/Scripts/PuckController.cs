@@ -3,19 +3,25 @@ using UnityEngine;
 public class PuckController : MonoBehaviour
 {
     private Rigidbody rb;
-    private Vector3 startPos;
+    public Vector3 StartPosition { get; private set; }
+    private Vector3 lastVelocity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        startPos = transform.position;
+        StartPosition = transform.position;
+    }
+
+    void FixedUpdate()
+    {
+        lastVelocity = rb.linearVelocity;
     }
 
     public void ResetPuck()
     {
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        transform.position = startPos;
+        transform.position = StartPosition;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,14 +34,17 @@ public class PuckController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (rb.isKinematic) return; // Ignore collisions during reset phase
+
+        AudioManager.Instance.PlayHit();
+
         // Check if the puck collided with a wall
         if (collision.gameObject.CompareTag("Wall"))
         {
-            // Calculate the reflection vector to get the bounce direction
-            Vector3 reflection = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
-            
-            // Apply a small force in the direction of the bounce to prevent sticking
-            rb.AddForce(reflection * 0.1f, ForceMode.Impulse);
+            // More robust bounce logic
+            var speed = lastVelocity.magnitude;
+            var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            rb.linearVelocity = direction * speed;
         }
     }
 }
