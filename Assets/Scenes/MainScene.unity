@@ -145,7 +145,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 152809165}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -256,7 +256,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284096477}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -479,7 +479,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660498005}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 669521330}
   m_Layer: 0
   m_Name: Goal_Player1
-  m_TagString: Untagged
+  m_TagString: GoalLeft
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -669,7 +669,7 @@ Transform:
   m_GameObject: {fileID: 669521329}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -10.5}
+  m_LocalPosition: {x: 0, y: 0.5, z: -10.43}
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -701,7 +701,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977188201}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -841,7 +841,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043336671}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -955,6 +955,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1324651691}
+  - component: {fileID: 1324651692}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -977,6 +978,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324651692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324651690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2046a4770ce64035bb3f4ee7a791010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  player1Score: 0
+  player2Score: 0
+  scoreTextP1: {fileID: 0}
+  scoreTextP2: {fileID: 0}
+  winPanel: {fileID: 0}
+  puck: {fileID: 1556235780}
+  winScore: 5
 --- !u!1 &1556235774
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,6 +1010,7 @@ GameObject:
   - component: {fileID: 1556235776}
   - component: {fileID: 1556235775}
   - component: {fileID: 1556235779}
+  - component: {fileID: 1556235780}
   m_Layer: 0
   m_Name: Puck
   m_TagString: Untagged
@@ -1004,7 +1025,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556235774}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1116,8 +1137,20 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 52
+  m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &1556235780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556235774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a7e1e425b79e4cc5806ba802166d425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuckController
 --- !u!1 &1645606032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1165,7 @@ GameObject:
   - component: {fileID: 1645606033}
   m_Layer: 0
   m_Name: Goal_Player2
-  m_TagString: Untagged
+  m_TagString: GoalRight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1223,7 +1256,7 @@ Transform:
   m_GameObject: {fileID: 1645606032}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 10.5}
+  m_LocalPosition: {x: 0, y: 0.5, z: 10.2}
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1394,7 +1427,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775320276}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b8003a110f5934af48beee42f15e61b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
