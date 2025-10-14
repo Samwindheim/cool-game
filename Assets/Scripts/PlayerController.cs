@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 10f;
-    public float dashForce = 20f;
+    public float dashSpeedMultiplier = 2f;
+    public float dashDuration = 0.25f;
     public float dashCooldown = 2f;
+
+    [Header("VFX")]
+    public GameObject dashEffectPrefab;
+
     private bool canDash = true;
     private Rigidbody rb;
     private Vector3 inputDir;
@@ -37,7 +43,24 @@ public class PlayerController : MonoBehaviour
     private System.Collections.IEnumerator Dash()
     {
         canDash = false;
-        rb.AddForce(inputDir.normalized * dashForce, ForceMode.Impulse);
+        
+        AudioManager.Instance.PlayDash();
+
+        float originalSpeed = moveSpeed;
+        moveSpeed *= dashSpeedMultiplier;
+
+        // Trigger the dash effect
+        if (dashEffectPrefab != null && inputDir != Vector3.zero)
+        {
+            // We want the effect to point away from the direction of movement
+            Quaternion effectRotation = Quaternion.LookRotation(-inputDir);
+            GameObject effect = Instantiate(dashEffectPrefab, transform.position, effectRotation);
+            Destroy(effect, 2f);
+        }
+
+        yield return new WaitForSeconds(dashDuration);
+        moveSpeed = originalSpeed;
+
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }

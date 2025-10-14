@@ -6,11 +6,19 @@ public class PuckController : MonoBehaviour
     private Rigidbody rb;
     public Vector3 StartPosition { get; private set; }
     private Vector3 lastVelocity;
+    private bool canPlaySound = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         StartPosition = transform.position;
+        // Enable hit sounds after a short delay to prevent sound on startup
+        Invoke("EnableSound", 0.1f);
+    }
+
+    void EnableSound()
+    {
+        canPlaySound = true;
     }
 
     void FixedUpdate()
@@ -37,7 +45,10 @@ public class PuckController : MonoBehaviour
     {
         if (rb.isKinematic) return; // Ignore collisions during reset phase
 
-        AudioManager.Instance.PlayHit();
+        if (canPlaySound)
+        {
+            AudioManager.Instance.PlayHit();
+        }
 
         // Instantiate the hit effect at the point of collision
         ContactPoint contact = collision.contacts[0];

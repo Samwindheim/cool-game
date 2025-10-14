@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,6 +44,22 @@ public class UIManager : MonoBehaviour
 
     public void RestartGame()
     {
+        // We start a coroutine to handle the delay
+        StartCoroutine(RestartGameRoutine());
+    }
+
+    private IEnumerator RestartGameRoutine()
+    {
+        // Play the click sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayUIClick();
+        }
+
+        // Wait for a short duration, ignoring the paused time scale
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        // Now, unpause and reload the scene
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

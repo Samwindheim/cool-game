@@ -29,34 +29,26 @@ public class GameManager : MonoBehaviour
 
     public void AddScore(int scoringPlayer)
     {
-        AudioManager.Instance.PlayGoal();
-
-        Transform goalTransform;
-
         if (scoringPlayer == 1)
         {
             player1Score++;
-            goalTransform = goal2Transform; // Player 1 scores in Goal 2's area
         }
         else // Player 2 scored
         {
             player2Score++;
-            goalTransform = goal1Transform; // Player 2 scores in Goal 1's area
-        }
-
-        // Spawn the goal flash effect
-        if (goalFlashEffectPrefab != null && goalTransform != null)
-        {
-            GameObject effect = Instantiate(goalFlashEffectPrefab, goalTransform.position, goalTransform.rotation);
-            Destroy(effect, 2f);
         }
 
         UpdateScoreUI();
 
+        // Check for win condition BEFORE playing any sounds
         if (player1Score >= winScore || player2Score >= winScore)
+        {
             EndGame(scoringPlayer);
+        }
         else
         {
+            // If it's not a winning goal, play the normal goal sound and reset
+            AudioManager.Instance.PlayGoal();
             StartCoroutine(ResetRound());
         }
     }
@@ -96,6 +88,7 @@ public class GameManager : MonoBehaviour
 
     void EndGame(int winningPlayer)
     {
+        AudioManager.Instance.PlayGameOver();
         Time.timeScale = 0;
         winPanel.SetActive(true);
 
