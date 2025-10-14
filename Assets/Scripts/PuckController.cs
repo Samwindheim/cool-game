@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PuckController : MonoBehaviour
 {
+    public GameObject hitEffectPrefab;
     private Rigidbody rb;
     public Vector3 StartPosition { get; private set; }
     private Vector3 lastVelocity;
@@ -37,6 +38,13 @@ public class PuckController : MonoBehaviour
         if (rb.isKinematic) return; // Ignore collisions during reset phase
 
         AudioManager.Instance.PlayHit();
+
+        // Instantiate the hit effect at the point of collision
+        ContactPoint contact = collision.contacts[0];
+        Quaternion rot = Quaternion.LookRotation(contact.normal);
+        Vector3 pos = contact.point + contact.normal * 0.1f; // Offset from the surface
+        GameObject effect = Instantiate(hitEffectPrefab, pos, rot);
+        Destroy(effect, 2f);
 
         // Check if the puck collided with a wall
         if (collision.gameObject.CompareTag("Wall"))

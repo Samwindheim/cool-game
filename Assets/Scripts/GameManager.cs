@@ -6,27 +6,51 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Scoring")]
     public int player1Score, player2Score;
+    public int winScore = 5;
+
+    [Header("References")]
     public TextMeshProUGUI scoreTextP1, scoreTextP2;
     public GameObject winPanel;
     public PuckController puck;
     public PlayerController player1;
     public PlayerController player2;
-    public int winScore = 5;
+    public GameObject goalFlashEffectPrefab;
+    [SerializeField] private Transform goal1Transform;
+    [SerializeField] private Transform goal2Transform;
+
 
     void Awake() => Instance = this;
 
-    public void AddScore(int player)
+    public void AddScore(int scoringPlayer)
     {
         AudioManager.Instance.PlayGoal();
 
-        if (player == 1) player1Score++;
-        else player2Score++;
+        Transform goalTransform;
 
-        // UpdateScoreUI(); // Temporarily commented out
+        if (scoringPlayer == 1)
+        {
+            player1Score++;
+            goalTransform = goal2Transform; // Player 1 scores in Goal 2's area
+        }
+        else // Player 2 scored
+        {
+            player2Score++;
+            goalTransform = goal1Transform; // Player 2 scores in Goal 1's area
+        }
+
+        // Spawn the goal flash effect
+        if (goalFlashEffectPrefab != null && goalTransform != null)
+        {
+            GameObject effect = Instantiate(goalFlashEffectPrefab, goalTransform.position, goalTransform.rotation);
+            Destroy(effect, 2f);
+        }
+
+        UpdateScoreUI();
 
         if (player1Score >= winScore || player2Score >= winScore)
-            EndGame();
+            EndGame(scoringPlayer);
         else
         {
             StartCoroutine(ResetRound());
@@ -62,13 +86,19 @@ public class GameManager : MonoBehaviour
 
     void UpdateScoreUI()
     {
-        // scoreTextP1.text = player1Score.ToString();
-        // scoreTextP2.text = player2Score.ToString();
+        scoreTextP1.text = player1Score.ToString();
+        scoreTextP2.text = player2Score.ToString();
     }
 
-    void EndGame()
+    void EndGame(int winningPlayer)
     {
         Time.timeScale = 0;
         winPanel.SetActive(true);
+
+        TextMeshProUGUI winText = winPanel.GetComponentInChildren<TextMeshProUGUI>();
+        if (winText != null)
+        {
+            winText.text = "Player " + winningPlayer + " Wins!";
+        }
     }
 }
