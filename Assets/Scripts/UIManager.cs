@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject titlePanel;
+    private bool isGameActive = false;
 
     void Start()
     {
@@ -15,11 +16,13 @@ public class UIManager : MonoBehaviour
             titlePanel.SetActive(true);
             Time.timeScale = 0;
         }
+        isGameActive = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Only allow pausing if the game is active
+        if (isGameActive && Input.GetKeyDown(KeyCode.Escape))
             TogglePause();
     }
 
@@ -29,6 +32,7 @@ public class UIManager : MonoBehaviour
         {
             titlePanel.SetActive(false);
             Time.timeScale = 1;
+            isGameActive = true;
         }
     }
 

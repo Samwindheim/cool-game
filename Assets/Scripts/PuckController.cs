@@ -57,13 +57,16 @@ public class PuckController : MonoBehaviour
         GameObject effect = Instantiate(hitEffectPrefab, pos, rot);
         Destroy(effect, 2f);
 
-        // Check if the puck collided with a wall
+        // Apply robust bounce logic to walls
         if (collision.gameObject.CompareTag("Wall"))
         {
-            // More robust bounce logic
             var speed = lastVelocity.magnitude;
-            var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-            rb.linearVelocity = direction * speed;
+            var reflectionDirection = Vector3.Reflect(lastVelocity.normalized, contact.normal);
+            
+            // Add a slight outward push to prevent sticking on glancing hits
+            var robustDirection = (reflectionDirection + contact.normal * 0.2f).normalized;
+
+            rb.linearVelocity = robustDirection * speed;
         }
     }
 }
