@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     public int player1Score, player2Score;
     public int winScore = 5;
 
+    [Header("UI")]
+    public Color player1Color = Color.red;
+    public Color player2Color = Color.blue;
+
     [Header("References")]
     public TextMeshProUGUI scoreTextP1, scoreTextP2;
     public GameObject winPanel;
@@ -98,7 +102,16 @@ public class GameManager : MonoBehaviour
         TextMeshProUGUI winText = winPanel.GetComponentInChildren<TextMeshProUGUI>();
         if (winText != null)
         {
-            winText.text = "Player " + winningPlayer + " Wins!";
+            if (winningPlayer == 1)
+            {
+                winText.text = "Red Wins!";
+                winText.color = player1Color;
+            }
+            else
+            {
+                winText.text = "Blue Wins!";
+                winText.color = player2Color;
+            }
         }
     }
 }

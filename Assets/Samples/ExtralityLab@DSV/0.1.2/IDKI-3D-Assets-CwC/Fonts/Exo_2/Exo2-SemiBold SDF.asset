@@ -2967,7 +2967,7 @@ Material:
     - _Diffuse: 0.5
     - _DstBlend: 0
     - _EnableExternalAlpha: 0
-    - _FaceDilate: 0
+    - _FaceDilate: 0.5
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlossMapScale: 1
@@ -2992,8 +2992,8 @@ Material:
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.8333333
-    - _ScaleRatioB: 0.6770833
-    - _ScaleRatioC: 0.6770833
+    - _ScaleRatioB: 0.26041666
+    - _ScaleRatioC: 0.26041666
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -3046,7 +3046,7 @@ Texture2D:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_IsAlphaChannelOptional: 0
-  serializedVersion: 3
+  serializedVersion: 4
   m_Width: 512
   m_Height: 512
   m_CompleteImageSize: 262144
