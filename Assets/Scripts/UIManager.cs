@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -48,6 +49,12 @@ public class UIManager : MonoBehaviour
             bool isPaused = !pauseMenu.activeSelf;
             pauseMenu.SetActive(isPaused);
             Time.timeScale = isPaused ? 0 : 1;
+
+            if (!isPaused)
+            {
+                // Clear the selected UI element to prevent the button from staying highlighted
+                EventSystem.current.SetSelectedGameObject(null);
+            }
         }
     }
 
