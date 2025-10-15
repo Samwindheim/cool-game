@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 inputDir;
     private Vector3 startPosition;
+    private Vector3 originalScale;
 
     [SerializeField] private string horizontalAxis = "Horizontal";
     [SerializeField] private string verticalAxis = "Vertical";
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         startPosition = transform.position;
+        originalScale = transform.localScale;
     }
 
     void Update()
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
     }
 
+    // **Dash effect**
     private System.Collections.IEnumerator Dash()
     {
         canDash = false;
@@ -48,6 +52,9 @@ public class PlayerController : MonoBehaviour
 
         float originalSpeed = moveSpeed;
         moveSpeed *= dashSpeedMultiplier;
+
+        // Start the stretch animation
+        StartCoroutine(StretchEffect(dashDuration));
 
         // Trigger the dash effect
         if (dashEffectPrefab != null && inputDir != Vector3.zero)
@@ -63,6 +70,32 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    // **Stretch effect**
+    private IEnumerator StretchEffect(float duration)
+    {
+        float timer = 0f;
+        Vector3 stretchedScale = new Vector3(originalScale.x * 0.7f, originalScale.y, originalScale.z * 1.3f); // Example stretch
+
+        // Stretch out
+        while (timer < duration / 2)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, stretchedScale, timer / (duration / 2));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Return to normal
+        timer = 0f;
+        while (timer < duration / 2)
+        {
+            transform.localScale = Vector3.Lerp(stretchedScale, originalScale, timer / (duration / 2));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
     }
 
     public void ResetPosition()

@@ -26,13 +26,18 @@ public class UIManager : MonoBehaviour
             TogglePause();
     }
 
+    public void SetGameActive(bool isActive)
+    {
+        isGameActive = isActive;
+    }
+
     public void StartGame()
     {
         if (titlePanel != null)
         {
             titlePanel.SetActive(false);
             Time.timeScale = 1;
-            isGameActive = true;
+            SetGameActive(true);
         }
     }
 

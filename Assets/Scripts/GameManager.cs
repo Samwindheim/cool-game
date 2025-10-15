@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     public Color player1Color = Color.red;
     public Color player2Color = Color.blue;
+    public float scorePopScale = 1.5f;
+    public float scorePopDuration = 0.25f;
 
     [Header("References")]
     public TextMeshProUGUI scoreTextP1, scoreTextP2;
@@ -23,35 +25,47 @@ public class GameManager : MonoBehaviour
     public GameObject goalFlashEffectPrefab;
     [SerializeField] private Transform goal1Transform;
     [SerializeField] private Transform goal2Transform;
+    [SerializeField] private UIManager uiManager;
 
 
     void Awake() => Instance = this;
 
     public void AddScore(int scoringPlayer)
     {
+        TextMeshProUGUI targetScoreText;
+        Transform goalTransform;
+
         if (scoringPlayer == 1)
         {
             player1Score++;
+            targetScoreText = scoreTextP1;
+            goalTransform = goal2Transform;
         }
         else // Player 2 scored
         {
             player2Score++;
+            targetScoreText = scoreTextP2;
+            goalTransform = goal1Transform;
         }
 
         UpdateScoreUI();
 
-        // Check for win condition BEFORE playing any sounds
+        // Start the pop animation
+        if (targetScoreText != null)
+        {
+            StartCoroutine(ScorePopEffect(targetScoreText));
+        }
+
+        // Check for win condition
         if (player1Score >= winScore || player2Score >= winScore)
         {
             EndGame(scoringPlayer);
         }
         else
         {
-            // If it's not a winning goal, play the normal goal sound and reset
             AudioManager.Instance.PlayGoal();
             
             // Spawn VFX on the correct goal
-            Transform goalTransform = (scoringPlayer == 1) ? goal2Transform : goal1Transform;
             if (goalFlashEffectPrefab != null && goalTransform != null)
             {
                 // Ensure the effect always points inwards towards the table
@@ -62,6 +76,33 @@ public class GameManager : MonoBehaviour
 
             StartCoroutine(ResetRound());
         }
+    }
+
+    private IEnumerator ScorePopEffect(TextMeshProUGUI scoreText)
+    {
+        Vector3 originalScale = scoreText.transform.localScale;
+        Vector3 targetScale = originalScale * scorePopScale;
+        float halfDuration = scorePopDuration / 2;
+        float timer = 0f;
+
+        // Scale up
+        while (timer < halfDuration)
+        {
+            scoreText.transform.localScale = Vector3.Lerp(originalScale, targetScale, timer / halfDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Scale down
+        timer = 0f;
+        while (timer < halfDuration)
+        {
+            scoreText.transform.localScale = Vector3.Lerp(targetScale, originalScale, timer / halfDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        scoreText.transform.localScale = originalScale;
     }
 
     private IEnumerator ResetRound()
@@ -99,6 +140,7 @@ public class GameManager : MonoBehaviour
 
     void EndGame(int winningPlayer)
     {
+        uiManager.SetGameActive(false); // Tell the UI Manager the game is over
         AudioManager.Instance.PlayGameOver();
         
         // Spawn VFX on the correct goal for the final score
