@@ -49,6 +49,17 @@ public class GameManager : MonoBehaviour
         {
             // If it's not a winning goal, play the normal goal sound and reset
             AudioManager.Instance.PlayGoal();
+            
+            // Spawn VFX on the correct goal
+            Transform goalTransform = (scoringPlayer == 1) ? goal2Transform : goal1Transform;
+            if (goalFlashEffectPrefab != null && goalTransform != null)
+            {
+                // Ensure the effect always points inwards towards the table
+                float yRotation = (goalTransform == goal1Transform) ? 0f : 180f;
+                Quaternion effectRotation = Quaternion.Euler(0, yRotation, 0);
+                Instantiate(goalFlashEffectPrefab, goalTransform.position, effectRotation);
+            }
+
             StartCoroutine(ResetRound());
         }
     }
@@ -89,6 +100,17 @@ public class GameManager : MonoBehaviour
     void EndGame(int winningPlayer)
     {
         AudioManager.Instance.PlayGameOver();
+        
+        // Spawn VFX on the correct goal for the final score
+        Transform goalTransform = (winningPlayer == 1) ? goal2Transform : goal1Transform;
+        if (goalFlashEffectPrefab != null && goalTransform != null)
+        {
+            // Ensure the effect always points inwards towards the table
+            float yRotation = (goalTransform == goal1Transform) ? 0f : 180f;
+            Quaternion effectRotation = Quaternion.Euler(0, yRotation, 0);
+            Instantiate(goalFlashEffectPrefab, goalTransform.position, effectRotation);
+        }
+
         Time.timeScale = 0;
         winPanel.SetActive(true);
 
