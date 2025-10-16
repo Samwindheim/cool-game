@@ -8,7 +8,7 @@ A fast-paced, two-player 3D air hockey game built in Unity. This project was dev
 
 ## Features
 
--   **Local Two-Player Gameplay:** Player 1 uses WASD + Tab and Player 2 uses the Arrow Keys + Space.
+-   **Local Two-Player Gameplay:** Red player uses WASD + Tab and Blue player uses the Arrow Keys + Space.
 -   **Complete Game Loop:** Full cycle from a title screen, to gameplay, to a win screen with a "Play Again" option.
 -   **Dash Mechanic:** Both players have a dash ability with a cooldown, complete with sound, particle effects, and a squash-and-stretch animation.
 -   **Rich Audio-Visual Feedback:**
@@ -20,7 +20,7 @@ A fast-paced, two-player 3D air hockey game built in Unity. This project was dev
 
 The goal is to be the first player to score 5 points!
 
-| Control | Player 1 (Red) | Player 2 (Blue) |
+| Control | Red | Blue |
 | :--- | :--- | :--- |
 | **Move** | `WASD` Keys | `Arrow` Keys |
 | **Dash** | `Tab` | `Space` |
