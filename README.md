@@ -1,6 +1,6 @@
 # Hockey Mayhem
 
-A fast-paced, two-player 3D air hockey game built in Unity. This project was developed as a comprehensive mini-game featuring a full gameplay loop and a focus on satisfying audio-visual feedback.
+A fast-paced, local two-player air hockey game built in Unity. This project was developed as a comprehensive mini-game featuring a full gameplay loop and a focus on satisfying audio-visual feedback.
 
 <img src="HockeyMayhem.png" width="300">
 
