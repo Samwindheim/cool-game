@@ -2,7 +2,7 @@
 
 A fast-paced, two-player 3D air hockey game built in Unity. This project was developed as a comprehensive mini-game featuring a full gameplay loop and a focus on satisfying audio-visual feedback.
 
-![Gameplay Screenshot](HockeyMayhem.png)
+<img src="HockeyMayhem.png" width="300">
 
 ---
 
