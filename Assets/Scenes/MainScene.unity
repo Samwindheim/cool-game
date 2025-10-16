@@ -2916,7 +2916,7 @@ GameObject:
   - component: {fileID: 1425036167}
   - component: {fileID: 1425036166}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PauseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2938,7 +2938,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 0}
+  m_AnchoredPosition: {x: 30, y: 20}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1425036166
@@ -2961,7 +2961,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Esc to pause
+  m_text: 'First to 5 wins!
+
+    Esc to pause'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4030,7 +4032,7 @@ MonoBehaviour:
   dashEffectPrefab: {fileID: 1591432872264830586, guid: 16d1376df8c054874ab13c5b39112b8f, type: 3}
   horizontalAxis: Horizontal
   verticalAxis: Vertical
-  dashKey: 113
+  dashKey: 9
 --- !u!1 &1781139216
 GameObject:
   m_ObjectHideFlags: 0

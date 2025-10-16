@@ -1,31 +1,39 @@
 using UnityEngine;
 
+// This class controls the puck's behavior, including physics, collisions, and visual effects.
 public class PuckController : MonoBehaviour
 {
     public GameObject hitEffectPrefab;
-    private Rigidbody rb;
+    
+    // The starting position of the puck, set on Awake. Can be read by other scripts.
     public Vector3 StartPosition { get; private set; }
-    private Vector3 lastVelocity;
-    private bool canPlaySound = false;
+
+    private Rigidbody rb;
+    private Vector3 lastVelocity; // Stores the velocity from the previous physics frame.
+    private bool canPlaySound = false; // Flag to prevent sound from playing on startup.
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         StartPosition = transform.position;
-        // Enable hit sounds after a short delay to prevent sound on startup
-        Invoke("EnableSound", 0.1f);
+
+        // Create a short "grace period" on startup to prevent the initial collision sound.
+        Invoke(nameof(EnableSound), 0.1f);
     }
 
+    // This method is called by Invoke in Start() after a short delay.
     void EnableSound()
     {
         canPlaySound = true;
     }
 
+    // We store the velocity in FixedUpdate to ensure it's always accurate for physics calculations.
     void FixedUpdate()
     {
         lastVelocity = rb.linearVelocity;
     }
 
+    // Resets the puck's position and stops all movement.
     public void ResetPuck()
     {
         rb.linearVelocity = Vector3.zero;
@@ -33,37 +41,48 @@ public class PuckController : MonoBehaviour
         transform.position = StartPosition;
     }
 
+    // Called by the physics engine when the puck enters a trigger collider (the goals).
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("GoalLeft"))
-            GameManager.Instance.AddScore(2);
+        {
+            GameManager.Instance.AddScore(2); // Player 2 scored.
+        }
         else if (other.CompareTag("GoalRight"))
-            GameManager.Instance.AddScore(1);
+        {
+            GameManager.Instance.AddScore(1); // Player 1 scored.
+        }
     }
 
+    // Called by the physics engine when the puck physically collides with another object.
     private void OnCollisionEnter(Collision collision)
     {
-        if (rb.isKinematic) return; // Ignore collisions during reset phase
+        // During the reset sequence, the puck is kinematic. We should ignore any collisions that happen then.
+        if (rb.isKinematic) return;
 
+        // Only play the hit sound if the initial grace period is over.
         if (canPlaySound)
         {
             AudioManager.Instance.PlayHit();
         }
 
-        // Instantiate the hit effect at the point of collision
+        // --- Visual Effects ---
+        // Spawn the hit particle effect at the exact point of contact.
         ContactPoint contact = collision.contacts[0];
+        Vector3 pos = contact.point + contact.normal * 0.1f; // Offset slightly from the surface to ensure it's visible.
         Quaternion rot = Quaternion.LookRotation(contact.normal);
-        Vector3 pos = contact.point + contact.normal * 0.1f; // Offset from the surface
         GameObject effect = Instantiate(hitEffectPrefab, pos, rot);
-        Destroy(effect, 2f);
+        Destroy(effect, 2f); // Clean up the effect after 2 seconds.
 
-        // Apply robust bounce logic to walls
+        // --- Physics Response ---
+        // We use custom bounce logic to prevent the puck from "sticking" to surfaces.
         if (collision.gameObject.CompareTag("Wall"))
         {
             var speed = lastVelocity.magnitude;
             var reflectionDirection = Vector3.Reflect(lastVelocity.normalized, contact.normal);
             
-            // Add a slight outward push to prevent sticking on glancing hits
+            // We add a small amount of the wall's normal vector to the reflection.
+            // This forces the puck to bounce outwards, even on very shallow glancing hits.
             var robustDirection = (reflectionDirection + contact.normal * 0.2f).normalized;
 
             rb.linearVelocity = robustDirection * speed;
