@@ -28,10 +28,12 @@ public class AudioManager : MonoBehaviour
             return;
         }
         
-        if (bgMusic != null)
-        {
-            bgMusic.Play();
-        }
+        // Music will be started by the UIManager after the first user interaction
+        // to comply with browser autoplay policies.
+        // if (bgMusic != null)
+        // {
+        //     bgMusic.Play();
+        // }
     }
 
     // --- Public Methods to Play Sounds ---

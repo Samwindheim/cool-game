@@ -47,6 +47,16 @@ public class UIManager : MonoBehaviour
             titlePanel.SetActive(false);
             Time.timeScale = 1; // Unpause the game.
             SetGameActive(true);
+
+            // Start the background music now that the user has interacted with the page.
+            // This is required for audio to work in most web browsers.
+            if (AudioManager.Instance != null && AudioManager.Instance.bgMusic != null)
+            {
+                if (!AudioManager.Instance.bgMusic.isPlaying)
+                {
+                    AudioManager.Instance.bgMusic.Play();
+                }
+            }
         }
     }
 
