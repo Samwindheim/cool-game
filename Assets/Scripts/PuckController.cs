@@ -42,6 +42,7 @@ public class PuckController : MonoBehaviour
     }
 
     // Called by the physics engine when the puck enters a trigger collider (the goals).
+    // When a goal is scored
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("GoalLeft"))
@@ -76,6 +77,7 @@ public class PuckController : MonoBehaviour
 
         // --- Physics Response ---
         // We use custom bounce logic to prevent the puck from "sticking" to surfaces.
+        // Vector3.reflect is a method that returns a vector that is the reflection of the input vector off of a surface.
         if (collision.gameObject.CompareTag("Wall"))
         {
             var speed = lastVelocity.magnitude;

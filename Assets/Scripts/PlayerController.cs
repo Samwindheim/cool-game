@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 // This class handles player input, paddle movement, dashing, and related visual effects.
 // It can be configured with different input axes to allow for multiple players.
@@ -16,32 +17,45 @@ public class PlayerController : MonoBehaviour
     public GameObject dashEffectPrefab;
 
     [Header("Input")]
-    [SerializeField] private string horizontalAxis = "Horizontal";
-    [SerializeField] private string verticalAxis = "Vertical";
-    [SerializeField] private KeyCode dashKey = KeyCode.Space;
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction dashAction;
     
     // --- Private State ---
     private bool canDash = true;
     private Rigidbody rb;
+    private Vector2 moveInput;
     private Vector3 inputDir;
     private Vector3 startPosition;
     private Vector3 originalScale;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        playerInput = GetComponent<PlayerInput>();
+        
+        // Cache the actions from the PlayerInput component
+        moveAction = playerInput.actions["Move"];
+        dashAction = playerInput.actions["Dash"];
+        
         startPosition = transform.position;
         originalScale = transform.localScale;
+    }
+
+    void Start()
+    {
+        // Initialization moved to Awake for PlayerInput consistency
     }
 
     // Input should be read in Update for maximum responsiveness.
     void Update()
     {
-        // Read movement input and store it.
-        inputDir = new Vector3(Input.GetAxisRaw(horizontalAxis), 0, Input.GetAxisRaw(verticalAxis));
+        // Read movement input as a Vector2 and convert to Vector3
+        moveInput = moveAction.ReadValue<Vector2>();
+        inputDir = new Vector3(moveInput.x, 0, moveInput.y);
 
-        // Check for the dash key press and if the dash is not on cooldown.
-        if (Input.GetKeyDown(dashKey) && canDash)
+        // Check for the dash trigger on this specific player's input
+        if (dashAction.triggered && canDash)
         {
             StartCoroutine(Dash());
         }
@@ -96,6 +110,7 @@ public class PlayerController : MonoBehaviour
         Vector3 stretchedScale = new Vector3(originalScale.x * 0.7f, originalScale.y, originalScale.z * 1.3f);
 
         // Animate from original to stretched scale over the first half of the dash.
+        // Lerp is a linear interpolation between two values over a given time.
         while (timer < duration / 2)
         {
             transform.localScale = Vector3.Lerp(originalScale, stretchedScale, timer / (duration / 2));

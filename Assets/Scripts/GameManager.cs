@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
             // If the game is not over, play the standard goal sound and reset for the next round.
             AudioManager.Instance.PlayGoal();
             
+            // Play the goal flash effect.
             if (goalFlashEffectPrefab != null && goalTransform != null)
             {
                 float yRotation = (goalTransform == goal1Transform) ? 0f : 180f;
@@ -124,6 +125,7 @@ public class GameManager : MonoBehaviour
 
         // We temporarily make the puck "kinematic" and disable its collider.
         // This is a robust way to prevent phantom collisions during the reset process.
+        // a simple reset caused bugs (like the puck moving on respawn)
         puckRb.isKinematic = true;
         puckCollider.enabled = false;
 
@@ -171,6 +173,7 @@ public class GameManager : MonoBehaviour
         winPanel.SetActive(true);
 
         // Update the win text to show the correct winner and color.
+        // how we know who won, we passed in the winningPlayer int, which is either 1 or 2
         TextMeshProUGUI winText = winPanel.GetComponentInChildren<TextMeshProUGUI>();
         if (winText != null)
         {

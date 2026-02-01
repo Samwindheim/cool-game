@@ -122,3 +122,7 @@ Assets/Samples.meta
 Assets/Samples.meta.meta
 
 build*
+
+# Add this to the end of your .gitignore file
+*.slnx
+samwindheim_PDD.pdf
