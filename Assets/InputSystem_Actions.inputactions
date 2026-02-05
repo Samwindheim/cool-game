@@ -7,7 +7,7 @@
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "New action",
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
@@ -105,7 +105,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -116,7 +116,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -126,8 +126,8 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player1",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player2",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -137,8 +137,8 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player1",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player2",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -148,8 +148,8 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player1",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player2",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -159,8 +159,8 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player1",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player2",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -171,7 +171,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -182,7 +182,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -193,7 +193,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -204,7 +204,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "New action",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -214,8 +214,8 @@
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player2",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player1",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -225,8 +225,8 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player2",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player1",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -236,8 +236,8 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player2",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player1",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -247,8 +247,8 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player2",
-                    "action": "Move",
+                    "groups": ";Keyboard&Mouse;Player1",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -511,7 +511,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player2",
+                    "groups": ";Keyboard&Mouse;Player1",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -519,10 +519,10 @@
                 {
                     "name": "",
                     "id": "b36b350f-8592-40e1-9b94-8756abdbe458",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse;Player1",
+                    "groups": ";Keyboard&Mouse;Player2",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
