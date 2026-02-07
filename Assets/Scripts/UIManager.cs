@@ -21,7 +21,8 @@ public class UIManager : MonoBehaviour
             titlePanel.SetActive(true);
         }
         // pause the game on start
-        Time.timeScale = 0; // this is needed to prevent the puck from moving on startup
+        // Set to 1 for vr mode, 0 for non-vr mode
+        Time.timeScale = 1; // this is needed to prevent the puck from moving on startup
         isGameActive = false;
     }
 
