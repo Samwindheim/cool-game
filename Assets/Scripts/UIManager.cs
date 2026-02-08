@@ -6,12 +6,20 @@ using UnityEngine.EventSystems;
 // This class manages UI state and navigation, such as the title screen and pause menu.
 public class UIManager : MonoBehaviour
 {
+    [Header("VR Input")]
+    public UnityEngine.InputSystem.InputActionReference pauseAction;
+
+    [Header("Pause (VR-safe)")]
+    [Tooltip("Rigidbodies to freeze while paused (e.g., puck + paddles).")]
+    [SerializeField] private Rigidbody[] pauseRigidbodies;
+
     public GameObject pauseMenu;
     public GameObject titlePanel;
     
     // This flag tracks if the game is in an "active" playable state.
     // It's used to prevent pausing from the title or game over screens.
     private bool isGameActive = false;
+    private bool isPaused = false;
 
     void Start()
     {
@@ -20,18 +28,41 @@ public class UIManager : MonoBehaviour
         {
             titlePanel.SetActive(true);
         }
-        // pause the game on start
-        // Set to 1 for vr mode, 0 for non-vr mode
-        Time.timeScale = 1; // this is needed to prevent the puck from moving on startup
+        // In VR, we keep Time.timeScale at 1 so the XR Simulator can move the hands.
+        // We use isGameActive to keep the puck and paddles from moving via their own scripts.
+        Time.timeScale = 1; 
         isGameActive = false;
+    }
+
+    void OnEnable()
+    {
+        // Ensure the action is enabled even if the map isn't (helps in-editor + simulator).
+        if (pauseAction != null && pauseAction.action != null)
+        {
+            pauseAction.action.Enable();
+        }
+    }
+
+    void OnDisable()
+    {
+        if (pauseAction != null && pauseAction.action != null)
+        {
+            pauseAction.action.Disable();
+        }
     }
 
     void Update()
     {
         // Only listen for the pause key if the game is currently active.
-        if (isGameActive && Input.GetKeyDown(KeyCode.Escape))
+        if (isGameActive)
         {
-            TogglePause();
+            bool keyboardPause = Input.GetKeyDown(KeyCode.Escape);
+            bool vrPause = (pauseAction != null && pauseAction.action != null && pauseAction.action.triggered);
+
+            if (keyboardPause || vrPause)
+            {
+                TogglePause();
+            }
         }
     }
 
@@ -67,18 +98,44 @@ public class UIManager : MonoBehaviour
     {
         if (pauseMenu != null)
         {
-            bool isPaused = !pauseMenu.activeSelf;
+            isPaused = !pauseMenu.activeSelf;
             pauseMenu.SetActive(isPaused);
             
-            // Setting Time.timeScale to 0 pauses all physics and animations.
-            // Setting it to 1 resumes normal time.
-            Time.timeScale = isPaused ? 0 : 1;
+            // VR-safe pause: keep timeScale at 1 so XR hands + UI still work.
+            // Instead, freeze gameplay rigidbodies (puck/paddles/etc).
+            SetPausedBodies(isPaused);
 
             // When unpausing, we clear the EventSystem's selected object.
             // This prevents buttons from getting visually "stuck" in their pressed state.
             if (!isPaused)
             {
                 EventSystem.current.SetSelectedGameObject(null);
+            }
+        }
+    }
+
+    private void SetPausedBodies(bool paused)
+    {
+        if (pauseRigidbodies == null) return;
+
+        for (int i = 0; i < pauseRigidbodies.Length; i++)
+        {
+            var rb = pauseRigidbodies[i];
+            if (rb == null) continue;
+
+            if (paused)
+            {
+                // Stop motion immediately, then make kinematic so physics won't move it.
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
+            }
+            else
+            {
+                // Resume physics. We keep velocities at zero to avoid "launching" on unpause.
+                rb.isKinematic = false;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
         }
     }

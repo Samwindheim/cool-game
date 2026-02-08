@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform goal2Transform;
     [SerializeField] private UIManager uiManager;
 
+    private bool isGameOver = false;
+
 
     void Awake()
     {
@@ -42,6 +44,9 @@ public class GameManager : MonoBehaviour
     // This method is called by the PuckController's trigger when a goal is scored.
     public void AddScore(int scoringPlayer)
     {
+        // Prevent extra scoring after the win condition is reached (VR keeps time running).
+        if (isGameOver) return;
+
         TextMeshProUGUI targetScoreText;
         Transform goalTransform;
 
@@ -70,6 +75,7 @@ public class GameManager : MonoBehaviour
         // Check if the score reaches the win condition.
         if (player1Score >= winScore || player2Score >= winScore)
         {
+            isGameOver = true;
             EndGame(scoringPlayer);
         }
         else
@@ -156,6 +162,8 @@ public class GameManager : MonoBehaviour
     // Handles the end-of-game sequence.
     void EndGame(int winningPlayer)
     {
+        isGameOver = true;
+
         // Tell the UIManager that the game is no longer active, which disables pausing.
         uiManager.SetGameActive(false); 
         AudioManager.Instance.PlayGameOver();
@@ -168,8 +176,24 @@ public class GameManager : MonoBehaviour
             Instantiate(goalFlashEffectPrefab, goalTransform.position, effectRotation);
         }
 
-        // Pause the game and show the win panel.
-        Time.timeScale = 0;
+        // In VR, we keep timeScale at 1 so hands can still move to click "Restart".
+        // Instead of pausing time, we stop the puck and prevent further goal triggers.
+        Time.timeScale = 1;
+        if (puck != null)
+        {
+            var puckRb = puck.GetComponent<Rigidbody>();
+            var puckCollider = puck.GetComponent<Collider>();
+            if (puckRb != null)
+            {
+                puckRb.linearVelocity = Vector3.zero;
+                puckRb.angularVelocity = Vector3.zero;
+                puckRb.isKinematic = true;
+            }
+            if (puckCollider != null)
+            {
+                puckCollider.enabled = false;
+            }
+        }
         winPanel.SetActive(true);
 
         // Update the win text to show the correct winner and color.
