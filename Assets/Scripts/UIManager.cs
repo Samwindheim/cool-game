@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+
 // This class manages UI state and navigation, such as the title screen and pause menu.
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class UIManager : MonoBehaviour
     [Header("Pause (VR-safe)")]
     [Tooltip("Rigidbodies to freeze while paused (e.g., puck + paddles).")]
     [SerializeField] private Rigidbody[] pauseRigidbodies;
+
+    [Header("Gameplay")]
+    [Tooltip("Red paddle grab—disabled until Start is pressed.")]
+    [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable playerPaddleGrab;
 
     public GameObject pauseMenu;
     public GameObject titlePanel;
@@ -33,6 +38,10 @@ public class UIManager : MonoBehaviour
         // We use isGameActive to keep the puck and paddles from moving via their own scripts.
         Time.timeScale = 1; 
         isGameActive = false;
+
+        // Disable paddle grabbing until game starts
+        if (playerPaddleGrab != null)
+            playerPaddleGrab.enabled = false;
     }
 
     void OnEnable()
@@ -82,6 +91,10 @@ public class UIManager : MonoBehaviour
             titlePanel.SetActive(false);
             Time.timeScale = 1; // Unpause the game.
             SetGameActive(true);
+
+            // Allow paddle to be grabbed now
+            if (playerPaddleGrab != null)
+                playerPaddleGrab.enabled = true;
 
             // Start the background audio now that the user has interacted with the page.
             // This is required for audio to work in most web browsers.
