@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 // This class manages UI state and navigation, such as the title screen and pause menu.
 public class UIManager : MonoBehaviour
@@ -56,7 +57,8 @@ public class UIManager : MonoBehaviour
         // Only listen for the pause key if the game is currently active.
         if (isGameActive)
         {
-            bool keyboardPause = Input.GetKeyDown(KeyCode.Escape);
+            // Keyboard fallback (for desktop/simulator) using the new Input System.
+            bool keyboardPause = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
             bool vrPause = (pauseAction != null && pauseAction.action != null && pauseAction.action.triggered);
 
             if (keyboardPause || vrPause)

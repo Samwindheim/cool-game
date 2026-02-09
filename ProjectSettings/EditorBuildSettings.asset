@@ -8,9 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: 8c523ce9b50e444f998721238ffddfc2
+  - enabled: 1
+    path: Assets/Scenes/MainSceneVR.unity
+    guid: 2d4dfe68381f44debb982c72698b3a6c
+  - enabled: 0
+    path: Assets/Scenes/Test.unity
+    guid: bb163244f21ae4f2983280dc74c051f1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: aff8185e8cdd240509e50f4a35e6d9d6, type: 2}
