@@ -139,6 +139,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         // Reset positions now that physics is temporarily paused for the puck.
+        if (player1 != null) player1.ForceRelease();
+        if (player2 != null) player2.ForceRelease();
+
         player1.ResetPosition();
         player2.ResetPosition();
         puck.transform.position = puck.StartPosition;

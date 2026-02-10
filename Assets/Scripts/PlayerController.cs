@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
 
+
 // This class handles player input, paddle movement, dashing, and related visual effects.
 // It can be configured with different input axes to allow for multiple players.
 public class PlayerController : MonoBehaviour
@@ -137,5 +138,18 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         transform.position = startPosition;
+    }
+
+    // Forcefully drops the paddle from the VR hand.
+    public void ForceRelease()
+    {
+        var interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        if (interactable != null && interactable.isSelected)
+        {
+            // Tells the XR system to release the object.
+            // interactables.firstInteractorSelecting was deprecated in newer XRI versions, 
+            // so we use the interactionManager to cancel all selections.
+            interactable.interactionManager.CancelInteractableSelection((UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable)interactable);
+        }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PuckController : MonoBehaviour
 {
     public GameObject hitEffectPrefab;
+    public float maxSpeed = 20f; // Limit how fast the puck can go
     
     // The starting position of the puck, set on Awake. Can be read by other scripts.
     public Vector3 StartPosition { get; private set; }
@@ -31,6 +32,12 @@ public class PuckController : MonoBehaviour
     void FixedUpdate()
     {
         lastVelocity = rb.linearVelocity;
+
+        // Enforce the speed limit to prevent the puck from "breaking" through walls or moving too fast for VR.
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
     }
 
     // Resets the puck's position and stops all movement.
