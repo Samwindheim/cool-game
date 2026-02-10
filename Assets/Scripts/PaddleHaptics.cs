@@ -34,5 +34,13 @@ public class PaddleHaptics : MonoBehaviour
         {
             controllerInteractor.SendHapticImpulse(intensity, duration);
         }
+
+        // --- NEW: Send haptic signal to ESP32 via WebSocket ---
+        if (WebSocketClientExample.Instance != null)
+        {
+            // Convert intensity (0-1) to byte (0-255) for ESP32
+            int espIntensity = Mathf.RoundToInt(intensity * 255);
+            WebSocketClientExample.Instance.SendHapticSignal(espIntensity);
+        }
     }
 }
