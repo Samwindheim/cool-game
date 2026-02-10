@@ -115,13 +115,28 @@ public class UIManager : MonoBehaviour
         {
             isPaused = !pauseMenu.activeSelf;
             pauseMenu.SetActive(isPaused);
-            
-            // VR-safe pause: keep timeScale at 1 so XR hands + UI still work.
-            // Instead, freeze gameplay rigidbodies (puck/paddles/etc).
+
             SetPausedBodies(isPaused);
 
-            // When unpausing, we clear the EventSystem's selected object.
-            // This prevents buttons from getting visually "stuck" in their pressed state.
+            // NEW: block paddle interaction while paused
+            if (playerPaddleGrab != null)
+            {
+                if (isPaused)
+                {
+                    if (playerPaddleGrab.isSelected && playerPaddleGrab.interactionManager != null)
+                    {
+                        playerPaddleGrab.interactionManager.CancelInteractableSelection(
+                            (UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable)playerPaddleGrab);
+                    }
+
+                    playerPaddleGrab.enabled = false;
+                }
+                else
+                {
+                    playerPaddleGrab.enabled = true;
+                }
+            }
+
             if (!isPaused)
             {
                 EventSystem.current.SetSelectedGameObject(null);

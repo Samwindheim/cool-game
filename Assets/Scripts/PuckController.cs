@@ -43,6 +43,15 @@ public class PuckController : MonoBehaviour
     // Resets the puck's position and stops all movement.
     public void ResetPuck()
     {
+        // If we’re currently in a "frozen" / kinematic state (e.g. during reset),
+        // just move the puck back without touching velocity.
+        if (rb.isKinematic)
+        {
+            transform.position = StartPosition;
+            return;
+        }
+
+        // Safe to clear velocities on a dynamic rigidbody.
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         transform.position = StartPosition;
@@ -87,14 +96,35 @@ public class PuckController : MonoBehaviour
         // Vector3.reflect is a method that returns a vector that is the reflection of the input vector off of a surface.
         if (collision.gameObject.CompareTag("Wall"))
         {
-            var speed = lastVelocity.magnitude;
-            var reflectionDirection = Vector3.Reflect(lastVelocity.normalized, contact.normal);
-            
-            // We add a small amount of the wall's normal vector to the reflection.
-            // This forces the puck to bounce outwards, even on very shallow glancing hits.
-            var robustDirection = (reflectionDirection + contact.normal * 0.2f).normalized;
+            Vector3 incoming = lastVelocity;
+            float speed = incoming.magnitude;
+            if (speed <= 0.01f) return;
 
-            rb.linearVelocity = robustDirection * speed;
+            Vector3 normal = contact.normal.normalized;
+
+            // Decompose velocity into normal (into wall) and tangent (along wall)
+            float vDotN = Vector3.Dot(incoming, normal);
+            Vector3 vNormal = vDotN * normal;
+            Vector3 vTangent = incoming - vNormal;
+
+            // Reflect the normal component (bounce)
+            Vector3 reflectedNormal = -vNormal;
+
+            // Dampen the tangential component to reduce "wall sliding"
+            float tangentDamping = 0.5f; // 0 = no slide, 1 = full slide; tweak as needed
+            Vector3 dampedTangent = vTangent * tangentDamping;
+
+            // Combine and enforce original speed
+            Vector3 newVelocity = reflectedNormal + dampedTangent;
+
+            // Make sure we’re not accidentally pushing into the wall
+            if (Vector3.Dot(newVelocity, normal) < 0f)
+            {
+                // Add a small outward bias
+                newVelocity += normal * (speed * 0.2f);
+            }
+
+            rb.linearVelocity = newVelocity.normalized * speed;
         }
     }
 }
