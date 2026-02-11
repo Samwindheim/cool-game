@@ -3,6 +3,8 @@ using UnityEngine;
 // This class controls the puck's behavior, including physics, collisions, and visual effects.
 public class PuckController : MonoBehaviour
 {
+    public static PuckController Instance;
+
     public GameObject hitEffectPrefab;
     public float maxSpeed = 20f; // Limit how fast the puck can go
     
@@ -12,6 +14,12 @@ public class PuckController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 lastVelocity; // Stores the velocity from the previous physics frame.
     private bool canPlaySound = false; // Flag to prevent sound from playing on startup.
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     void Start()
     {

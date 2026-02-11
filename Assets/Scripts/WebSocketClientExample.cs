@@ -14,7 +14,7 @@ public class WebSocketClientExample : MonoBehaviour
     public static WebSocketClientExample Instance;
 
     private WebSocket websocket;
-    public string serverIP = "XXX.XXX.XXX.XXX"; // Replace with your server's IP address
+    public string serverIP = "10.204.0.53"; // Replace with your server's IP address
     public int serverPort = 8081; // Replace with your server's port number (8081 is the default)
 
     [Range(0, 255)]
@@ -131,17 +131,18 @@ public class WebSocketClientExample : MonoBehaviour
         if(msg.Contains("button")) {
             if(valueParsed == "1") 
             {
-                // Trigger a sound effect when the button is pressed
+                // Reset the puck to the starting position
+                PuckController.Instance.ResetPuck();
+                Debug.Log("ESP32 Button Pressed - Resetting Puck");
+                //play a sound effect
                 if (AudioManager.Instance != null)
                 {
                     AudioManager.Instance.PlayUIClick(); // Using UIClick as an example
                 }
-                Debug.Log("ESP32 Button Pressed - Triggering Sound");
             }
             if(valueParsed == "0") 
             {
-                //do something if button released
-                Debug.Log("ESP32 Button Released");
+                //do nothing if button released
             }
 
         }
@@ -152,8 +153,8 @@ public class WebSocketClientExample : MonoBehaviour
     {
         if (websocket != null && websocket.State == WebSocketState.Open)
         {
-            // Send a haptic command to the ESP32 (e.g., "HAPTIC:255")
-            await websocket.SendText("HAPTIC:" + intensity);
+            // Led changes intensity with haptic signal
+            await websocket.SendText("LED_INTENSITY:" + intensity);
             Debug.Log("Sent Haptic Signal: " + intensity);
         }
     }

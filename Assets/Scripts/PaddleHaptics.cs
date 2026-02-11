@@ -41,6 +41,17 @@ public class PaddleHaptics : MonoBehaviour
             // Convert intensity (0-1) to byte (0-255) for ESP32
             int espIntensity = Mathf.RoundToInt(intensity * 255);
             WebSocketClientExample.Instance.SendHapticSignal(espIntensity);
+
+            // Send a "turn off" signal after a short delay to create a pulse effect
+            Invoke(nameof(TurnOffEspLed), 0.5f);
+        }
+    }
+
+    private void TurnOffEspLed()
+    {
+        if (WebSocketClientExample.Instance != null)
+        {
+            WebSocketClientExample.Instance.SendHapticSignal(0);
         }
     }
 }
