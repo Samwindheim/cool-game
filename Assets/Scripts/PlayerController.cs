@@ -152,4 +152,19 @@ public class PlayerController : MonoBehaviour
             interactable.interactionManager.CancelInteractableSelection((UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable)interactable);
         }
     }
+
+    // Triggers a haptic impulse on the controller currently holding this paddle.
+    public void TriggerHaptic(float intensity, float duration)
+    {
+        var interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        if (interactable != null && interactable.isSelected)
+        {
+            // Get the interactor (the hand) currently holding the paddle
+            var interactor = interactable.interactorsSelecting[0];
+            if (interactor is UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInputInteractor inputInteractor)
+            {
+                inputInteractor.SendHapticImpulse(intensity, duration);
+            }
+        }
+    }
 }

@@ -83,6 +83,10 @@ public class GameManager : MonoBehaviour
             // If the game is not over, play the standard goal sound and reset for the next round.
             AudioManager.Instance.PlayGoal();
             
+            // Trigger haptic response for both players on goal
+            if (player1 != null) player1.TriggerHaptic(0.5f, 0.5f);
+            if (player2 != null) player2.TriggerHaptic(0.5f, 0.5f);
+
             // Play the goal flash effect.
             if (goalFlashEffectPrefab != null && goalTransform != null)
             {
