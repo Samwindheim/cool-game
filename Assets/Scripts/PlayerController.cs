@@ -135,9 +135,23 @@ public class PlayerController : MonoBehaviour
     // Resets the player to their starting position. Called by the GameManager after a goal.
     public void ResetPosition()
     {
+        // Force the Rigidbody to stop all motion immediately
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        
+        // Move both the transform and the physics body simultaneously
         transform.position = startPosition;
+        rb.position = startPosition;
+
+        // CRITICAL: If the paddle is currently being held by a VR interactor,
+        // we need to tell the interaction manager to update its internal pose.
+        var interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        if (interactable != null && interactable.isSelected)
+        {
+            // This forces the XR system to recognize the new position immediately
+            // even if the user is still 'holding' it.
+            ForceRelease();
+        }
     }
 
     // Forcefully drops the paddle from the VR hand.

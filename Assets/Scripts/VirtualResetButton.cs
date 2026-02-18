@@ -10,9 +10,6 @@ public class VirtualResetButton : MonoBehaviour
     public Color normalColor = Color.red;
     public Color pressedColor = Color.white;
 
-    [Header("Action Settings")]
-    public PlayerController player; // Reference to the player to reset
-
     private Vector3 initialLocalPos;
     private MeshRenderer buttonRenderer;
     private bool isPressed = false;
@@ -65,17 +62,11 @@ public class VirtualResetButton : MonoBehaviour
             AudioManager.Instance.PlayUIClick();
         }
 
-        // 3. Action: Reset the Puck and Player
+        // 3. Action: Reset the Puck
         if (PuckController.Instance != null)
         {
             PuckController.Instance.ResetPuck();
             Debug.Log("Virtual Button Pressed - Resetting Puck");
-        }
-
-        if (player != null)
-        {
-            player.ResetPosition();
-            Debug.Log("Virtual Button Pressed - Resetting Player");
         }
 
         // 4. Reset button position after a short delay

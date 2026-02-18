@@ -51,18 +51,23 @@ public class PuckController : MonoBehaviour
     // Resets the puck's position and stops all movement.
     public void ResetPuck()
     {
-        // If we’re currently in a "frozen" / kinematic state (e.g. during reset),
-        // just move the puck back without touching velocity.
-        if (rb.isKinematic)
-        {
-            transform.position = StartPosition;
-            return;
-        }
-
         // Safe to clear velocities on a dynamic rigidbody.
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        
+        // Move both the transform and the physics body simultaneously
         transform.position = StartPosition;
+        rb.position = StartPosition;
+
+        // Force a physics sync to ensure the engine registers the teleport immediately
+        Physics.SyncTransforms();
+
+        // If we’re currently in a "frozen" / kinematic state (e.g. during reset),
+        // we've already moved it above, so we can just return.
+        if (rb.isKinematic)
+        {
+            return;
+        }
     }
 
     // Called by the physics engine when the puck enters a trigger collider (the goals).

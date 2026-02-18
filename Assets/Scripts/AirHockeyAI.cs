@@ -17,9 +17,7 @@ public class AirHockeyAI : MonoBehaviour
     public float sideBoundaryX = 0.45f; // How far left/right it can go
     public float backBoundaryZ = 0.9f; // The back wall
     public float goalWidth = 0.2f; // The width of the goal area to protect
-
-    [Header("AI Intelligence")]
-    public float predictionLeadTime = 0.15f; // How far ahead to predict the puck's position
+    public float predictionLeadTime = 0.1f; // How far ahead to predict the puck's position
 
     private Rigidbody rb;
     private Rigidbody puckRb;

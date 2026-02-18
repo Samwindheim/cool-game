@@ -905,6 +905,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311559714}
   m_CullTransparentMesh: 1
+--- !u!114 &332195206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Left Interaction/Reset
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_ActionId: 0c870acd-ea38-4b20-8aa8-d16c0b46bdd7
 --- !u!1 &341131199
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,15 +2687,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AirHockeyAI
   puck: {fileID: 1556235778}
   defensiveLine: {fileID: 0}
-  speed: 6
-  maxSpeed: 10
-  attackPower: 1.3
-  strikeCooldown: 0.6
+  speed: 5
+  maxSpeed: 6
+  attackPower: 1.4
+  strikeCooldown: 1.5
   tableCenterZ: 0
   sideBoundaryX: 5
   backBoundaryZ: 2
   goalWidth: 1
-  predictionLeadTime: 0.15
+  predictionLeadTime: 0.2
 --- !u!1 &1052598845
 GameObject:
   m_ObjectHideFlags: 0
@@ -4123,7 +4137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuckController
   hitEffectPrefab: {fileID: 1591432872264830586, guid: 69afcc99245c3466cbe7a04d2c67ef31, type: 3}
-  maxSpeed: 10
+  maxSpeed: 8
 --- !u!1 &1645606032
 GameObject:
   m_ObjectHideFlags: 0
@@ -4236,6 +4250,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1873685774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1697346020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1697346022}
+  - component: {fileID: 1697346023}
+  m_Layer: 0
+  m_Name: VR Reset Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1697346022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697346020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.025, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1697346023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697346020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086e9915da99446419f394da05740cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRResetHandler
+  resetAction: {fileID: 332195206}
+  player1: {fileID: 1775320282}
+  player2: {fileID: 1043336677}
+  puck: {fileID: 1556235780}
 --- !u!1 &1705064532
 GameObject:
   m_ObjectHideFlags: 0
@@ -6902,11 +6964,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13556744065e44d19b5761b903e29295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VirtualResetButton
-  buttonCap: {fileID: 0}
+  buttonCap: {fileID: 1416181305}
   pressDistance: 0.02
   normalColor: {r: 1, g: 0, b: 0, a: 1}
   pressedColor: {r: 1, g: 1, b: 1, a: 1}
-  player: {fileID: 1775320282}
 --- !u!114 &2129162736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6996,3 +7057,4 @@ SceneRoots:
   - {fileID: 1347023496}
   - {fileID: 1376633865}
   - {fileID: 355166898}
+  - {fileID: 1697346022}
