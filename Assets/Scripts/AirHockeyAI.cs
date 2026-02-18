@@ -18,7 +18,11 @@ public class AirHockeyAI : MonoBehaviour
     public float backBoundaryZ = 0.9f; // The back wall
     public float goalWidth = 0.2f; // The width of the goal area to protect
 
+    [Header("AI Intelligence")]
+    public float predictionLeadTime = 0.15f; // How far ahead to predict the puck's position
+
     private Rigidbody rb;
+    private Rigidbody puckRb;
     private Vector3 targetPosition;
     private Vector3 startingPosition;
     private float lastStrikeTime;
@@ -32,11 +36,21 @@ public class AirHockeyAI : MonoBehaviour
         // Find the puck automatically if not assigned
         if (puck == null)
             puck = GameObject.FindGameObjectWithTag("Puck")?.transform;
+
+        if (puck != null)
+            puckRb = puck.GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
         if (puck == null) return;
+
+        // Calculate predicted puck position based on its velocity
+        Vector3 predictedPuckPos = puck.position;
+        if (puckRb != null)
+        {
+            predictedPuckPos += puckRb.linearVelocity * predictionLeadTime;
+        }
 
         // 1. Decide where to move
         if (puck.position.z > tableCenterZ)
@@ -75,17 +89,17 @@ public class AirHockeyAI : MonoBehaviour
                         sideOffset = puck.position.x > transform.position.x ? -0.25f : 0.25f;
                     }
                     
-                    targetPosition = new Vector3(puck.position.x + sideOffset, transform.position.y, puck.position.z + 0.15f);
+                    targetPosition = new Vector3(predictedPuckPos.x + sideOffset, transform.position.y, puck.position.z + 0.15f);
                 }
                 else
                 {
                     // Strike through! 
                     // If the puck is very close to the goal, aim to hit it at an angle away from the center
-                    float targetX = puck.position.x;
+                    float targetX = predictedPuckPos.x;
                     if (transform.position.z > backBoundaryZ - 0.2f && Mathf.Abs(puck.position.x) < goalWidth)
                     {
                         // Aim for the corners of the table instead of straight ahead
-                        targetX = puck.position.x > 0 ? sideBoundaryX : -sideBoundaryX;
+                        targetX = predictedPuckPos.x > 0 ? sideBoundaryX : -sideBoundaryX;
                     }
 
                     float strikeDepth = 0.3f;
@@ -94,13 +108,13 @@ public class AirHockeyAI : MonoBehaviour
             }
             else
             {
-                // In cooldown: Just shadow the puck's X position from a safe distance
-                targetPosition = new Vector3(puck.position.x, transform.position.y, startingPosition.z);
+                // In cooldown: Shadow the puck's X position but stay at the defensive starting Z position
+                targetPosition = new Vector3(predictedPuckPos.x, transform.position.y, startingPosition.z);
             }
         }
         else
         {
-            // Puck is on Player's side - RETREAT to starting position
+            // Puck is on Player's side - ALWAYS RETREAT to starting position in front of goal
             isStriking = false;
             targetPosition = startingPosition;
         }

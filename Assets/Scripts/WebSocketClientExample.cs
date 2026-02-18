@@ -138,11 +138,10 @@ public class WebSocketClientExample : MonoBehaviour
                 if (AudioManager.Instance != null)
                 {
                     AudioManager.Instance.PlayUIClick(); // Using UIClick as an example
-                }
-            }
+                }            }
             if(valueParsed == "0") 
             {
-                //do nothing if button released
+                //do nothin0g if button released
             }
 
         }

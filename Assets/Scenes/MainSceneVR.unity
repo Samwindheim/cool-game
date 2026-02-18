@@ -2526,7 +2526,7 @@ Transform:
   m_GameObject: {fileID: 1043336671}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.5000001, z: 8.51}
+  m_LocalPosition: {x: -0, y: 0.5000001, z: 8}
   m_LocalScale: {x: 1.2, y: 0.3, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2675,12 +2675,13 @@ MonoBehaviour:
   defensiveLine: {fileID: 0}
   speed: 6
   maxSpeed: 10
-  attackPower: 1.2
-  strikeCooldown: 0.3
+  attackPower: 1.3
+  strikeCooldown: 0.6
   tableCenterZ: 0
   sideBoundaryX: 5
   backBoundaryZ: 2
   goalWidth: 1
+  predictionLeadTime: 0.15
 --- !u!1 &1052598845
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,6 +6906,7 @@ MonoBehaviour:
   pressDistance: 0.02
   normalColor: {r: 1, g: 0, b: 0, a: 1}
   pressedColor: {r: 1, g: 1, b: 1, a: 1}
+  player: {fileID: 1775320282}
 --- !u!114 &2129162736
 MonoBehaviour:
   m_ObjectHideFlags: 0
