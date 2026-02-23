@@ -18,6 +18,7 @@ public class AirHockeyAI : MonoBehaviour
     public float backBoundaryZ = 0.9f; // The back wall
     public float goalWidth = 0.2f; // The width of the goal area to protect
     public float predictionLeadTime = 0.1f; // How far ahead to predict the puck's position
+    public float safetyBufferZ = 0.15f; // Minimum distance to keep behind the puck to avoid own-goals
 
     private Rigidbody rb;
     private Rigidbody puckRb;
@@ -67,10 +68,18 @@ public class AirHockeyAI : MonoBehaviour
             else if (Time.time > lastStrikeTime + strikeCooldown)
             {
                 // Start a new strike!
+                
+                // SAFETY CHECK: Don't strike if the puck is already behind us or too close to our goal line
+                if (puck.position.z > backBoundaryZ - 0.05f)
+                {
+                    targetPosition = new Vector3(puck.position.x, transform.position.y, backBoundaryZ);
+                    return;
+                }
+
                 isStriking = true;
                 lastStrikeTime = Time.time;
 
-                if (puck.position.z > transform.position.z)
+                if (puck.position.z > transform.position.z - 0.05f)
                 {
                     // Recovery maneouver: Move to the side and slightly behind the puck
                     // CRITICAL: If the puck is directly in front of the goal, be extra careful
@@ -87,7 +96,7 @@ public class AirHockeyAI : MonoBehaviour
                         sideOffset = puck.position.x > transform.position.x ? -0.25f : 0.25f;
                     }
                     
-                    targetPosition = new Vector3(predictedPuckPos.x + sideOffset, transform.position.y, puck.position.z + 0.15f);
+                    targetPosition = new Vector3(predictedPuckPos.x + sideOffset, transform.position.y, puck.position.z + safetyBufferZ);
                 }
                 else
                 {
@@ -114,7 +123,22 @@ public class AirHockeyAI : MonoBehaviour
         {
             // Puck is on Player's side - ALWAYS RETREAT to starting position in front of goal
             isStriking = false;
-            targetPosition = startingPosition;
+            
+            // IMPROVED RETREAT: Move to the side if the puck is in our way while retreating
+            float retreatX = startingPosition.x;
+            
+            // If we are retreating and the puck is between us and our goal, move around it
+            // Only do this if the puck is on our side of the table center
+            if (puck.position.z > transform.position.z && puck.position.z > tableCenterZ)
+            {
+                // If the puck is directly in our path (X-wise), shift our retreat path to the side
+                if (Mathf.Abs(transform.position.x - puck.position.x) < 0.2f)
+                {
+                    retreatX = puck.position.x > 0 ? puck.position.x - 0.3f : puck.position.x + 0.3f;
+                }
+            }
+            
+            targetPosition = new Vector3(retreatX, transform.position.y, startingPosition.z);
         }
 
         // 2. Constrain the target to the AI's half of the table

@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform goal1Transform;
     [SerializeField] private Transform goal2Transform;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private GameStopwatch stopwatch;
 
     private bool isGameOver = false;
 
@@ -170,6 +171,12 @@ public class GameManager : MonoBehaviour
     void EndGame(int winningPlayer)
     {
         isGameOver = true;
+
+        // Stop the stopwatch when the game ends
+        if (GameStopwatch.Instance != null)
+        {
+            GameStopwatch.Instance.StopTimer();
+        }
 
         // Tell the UIManager that the game is no longer active, which disables pausing.
         uiManager.SetGameActive(false); 

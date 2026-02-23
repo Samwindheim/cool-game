@@ -92,6 +92,12 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1; // Unpause the game.
             SetGameActive(true);
 
+            // Start the stopwatch when the game begins
+            if (GameStopwatch.Instance != null)
+            {
+                GameStopwatch.Instance.StartTimer();
+            }
+
             // Allow paddle to be grabbed now
             if (playerPaddleGrab != null)
                 playerPaddleGrab.enabled = true;
