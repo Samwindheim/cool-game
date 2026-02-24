@@ -2734,15 +2734,15 @@ MonoBehaviour:
   puck: {fileID: 1556235778}
   defensiveLine: {fileID: 0}
   speed: 4
-  maxSpeed: 6
-  attackPower: 1.5
+  maxSpeed: 8
+  attackPower: 1.7
   strikeCooldown: 0.6
   tableCenterZ: 0
   sideBoundaryX: 5
   backBoundaryZ: 2
   goalWidth: 4
-  predictionLeadTime: 0.1
-  safetyBufferZ: 0.08
+  predictionLeadTime: 0.2
+  safetyBufferZ: 0.15
 --- !u!1 &1052598845
 GameObject:
   m_ObjectHideFlags: 0
